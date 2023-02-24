@@ -1,0 +1,138 @@
+{{- if .Values.ldap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nifi-registry.fullname" . }}-ldap-configuration
+data:
+  # property-like keys; each key maps to a simple value
+  identity-providers.xml: |
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <!--<loginIdentityProviders>
+      <provider>
+        <identifier>ldap-identity-provider</identifier>
+        <class>org.apache.nifi.registry.security.ldap.LdapIdentityProvider</class>
+        <property name="Authentication Strategy">{{ .Values.ldap.authentication }}</property>
+
+        <property name="Manager DN">{{ .Values.ldap.manager.dn }}</property>
+        <property name="Manager Password">{{ .Values.ldap.manager.password }}</property>
+
+        {{- if .Values.ldap.tls.enabled }}
+        <property name="TLS - Keystore">{{ .Values.ldap.tls.keystore }}</property>
+        <property name="TLS - Keystore Password">{{ .Values.ldap.tls.keystorePassword }}</property>
+        <property name="TLS - Keystore Type">{{ .Values.ldap.tls.keystoreType }}</property>
+        <property name="TLS - Truststore">{{ .Values.ldap.tls.truststore }}</property>
+        <property name="TLS - Truststore Password">{{ .Values.ldap.tls.truststorePassword }}</property>
+        <property name="TLS - Truststore Type">{{ .Values.ldap.tls.truststoreType }}</property>
+        <property name="TLS - Client Auth">{{ .Values.ldap.tls.clientAuth }}</property>
+        <property name="TLS - Protocol">{{ .Values.ldap.tls.protocol }}</property>
+        <property name="TLS - Shutdown Gracefully">{{ .Values.ldap.tls.shutdownGracefully }}</property>
+        {{- end }}
+
+        <property name="Referral Strategy">{{ .Values.ldap.referral }}</property>
+        <property name="Connect Timeout">{{ .Values.ldap.timeout.connect }}</property>
+        <property name="Read Timeout">{{ .Values.ldap.timeout.read }}</property>
+
+        <property name="Url">{{ .Values.ldap.host }}</property>
+        <property name="User Search Base">{{ .Values.ldap.userSearch.base }}</property>
+        <property name="User Search Filter">{{ .Values.ldap.userSearch.filter }}</property>
+
+        <property name="Identity Strategy">{{ .Values.ldap.identityStrategy }}</property>
+        <property name="Authentication Expiration">{{ .Values.ldap.authenticationExpiration }}</property>
+      </provider>
+    </loginIdentityProviders>-->
+
+    <identityProviders>
+      <provider>
+        <identifier>ldap-identity-provider</identifier>
+        <class>org.apache.nifi.registry.security.ldap.LdapIdentityProvider</class>
+        <property name="Authentication Strategy">{{ .Values.ldap.authentication }}</property>
+
+        <property name="Manager DN">{{ .Values.ldap.manager.dn }}</property>
+        <property name="Manager Password">{{ .Values.ldap.manager.password }}</property>
+
+        {{- if .Values.ldap.tls.enabled }}
+        <property name="TLS - Keystore">{{ .Values.ldap.tls.keystore }}</property>
+        <property name="TLS - Keystore Password">{{ .Values.ldap.tls.keystorePassword }}</property>
+        <property name="TLS - Keystore Type">{{ .Values.ldap.tls.keystoreType }}</property>
+        <property name="TLS - Truststore">{{ .Values.ldap.tls.truststore }}</property>
+        <property name="TLS - Truststore Password">{{ .Values.ldap.tls.truststorePassword }}</property>
+        <property name="TLS - Truststore Type">{{ .Values.ldap.tls.truststoreType }}</property>
+        <property name="TLS - Client Auth">{{ .Values.ldap.tls.clientAuth }}</property>
+        <property name="TLS - Protocol">{{ .Values.ldap.tls.protocol }}</property>
+        <property name="TLS - Shutdown Gracefully">{{ .Values.ldap.tls.shutdownGracefully }}</property>
+        {{- end }}
+
+        <property name="Referral Strategy">{{ .Values.ldap.referral }}</property>
+        <property name="Connect Timeout">{{ .Values.ldap.timeout.connect }}</property>
+        <property name="Read Timeout">{{ .Values.ldap.timeout.read }}</property>
+
+        <property name="Url">{{ .Values.ldap.host }}</property>
+        <property name="User Search Base">{{ .Values.ldap.userSearch.base }}</property>
+        <property name="User Search Filter">{{ .Values.ldap.userSearch.filter.login }}</property>
+
+        <property name="Identity Strategy">{{ .Values.ldap.identityStrategy }}</property>
+        <property name="Authentication Expiration">{{ .Values.ldap.authenticationExpiration }}</property>
+      </provider>
+    </identityProviders>
+
+  authorizers.xml: |
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <authorizers>
+      <userGroupProvider>
+        <identifier>ldap-user-group-provider</identifier>
+        <class>org.apache.nifi.registry.security.ldap.tenants.LdapUserGroupProvider</class>
+        <property name="Authentication Strategy">{{ .Values.ldap.authentication }}</property>
+        <property name="Manager DN">{{ .Values.ldap.manager.dn }}</property>
+        <property name="Manager Password">{{ .Values.ldap.manager.password }}</property>
+
+        {{- if .Values.ldap.tls.enabled }}
+        <property name="TLS - Keystore">{{ .Values.ldap.tls.keystore }}</property>
+        <property name="TLS - Keystore Password">{{ .Values.ldap.tls.keystorePassword }}</property>
+        <property name="TLS - Keystore Type">{{ .Values.ldap.tls.keystoreType }}</property>
+        <property name="TLS - Truststore">{{ .Values.ldap.tls.truststore }}</property>
+        <property name="TLS - Truststore Password">{{ .Values.ldap.tls.truststorePassword }}</property>
+        <property name="TLS - Truststore Type">{{ .Values.ldap.tls.truststoreType }}</property>
+        <property name="TLS - Client Auth">{{ .Values.ldap.tls.clientAuth }}</property>
+        <property name="TLS - Protocol">{{ .Values.ldap.tls.protocol }}</property>
+        <property name="TLS - Shutdown Gracefully">{{ .Values.ldap.tls.shutdownGracefully }}</property>
+        {{- end }}
+
+        <property name="Referral Strategy">{{ .Values.ldap.referral }}</property>
+        <property name="Connect Timeout">{{ .Values.ldap.timeout.connect }}</property>
+        <property name="Read Timeout">{{ .Values.ldap.timeout.read }}</property>
+        <property name="Url">{{ .Values.ldap.host }}</property>
+        <property name="Page Size"/>
+        <property name="Sync Interval">30 mins</property>
+
+        <property name="User Search Base">{{ .Values.ldap.userSearch.base }}</property>
+        <property name="User Object Class">{{ .Values.ldap.userSearch.objectClass }}</property>
+        <property name="User Search Scope">{{ .Values.ldap.userSearch.scope }}</property>
+        <property name="User Search Filter">{{ .Values.ldap.userSearch.filter.authorize }}</property>
+        <property name="User Identity Attribute">{{ .Values.ldap.userSearch.identityAttribute }}</property>
+        <property name="User Group Name Attribute"/>
+        <property name="User Group Name Attribute - Referenced Group Attribute"/>
+        <property name="Group Search Base"/>
+        <property name="Group Object Class">group</property>
+        <property name="Group Search Scope">ONE_LEVEL</property>
+        <property name="Group Search Filter"/>
+        <property name="Group Name Attribute"/>
+        <property name="Group Member Attribute"/>
+        <property name="Group Member Attribute - Referenced User Attribute"/>
+      </userGroupProvider>
+
+      <accessPolicyProvider>
+        <identifier>file-access-policy-provider</identifier>
+        <class>org.apache.nifi.registry.security.authorization.file.FileAccessPolicyProvider</class>
+        <property name="User Group Provider">ldap-user-group-provider</property>
+        <property name="Authorizations File">./conf/authorizations.xml</property>
+        <property name="Initial Admin Identity">{{ .Values.security.admin }}</property>
+        <property name="NiFi Identity 1"></property>
+      </accessPolicyProvider>
+
+      <authorizer>
+          <identifier>managed-authorizer</identifier>
+          <class>org.apache.nifi.registry.security.authorization.StandardManagedAuthorizer</class>
+          <property name="Access Policy Provider">file-access-policy-provider</property>
+      </authorizer>
+    </authorizers>
+{{- end }}

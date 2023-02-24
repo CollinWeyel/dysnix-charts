@@ -271,3 +271,34 @@ oidc:
   connectTimeout: "5 secs"
   # OIDC Read Timeout
   readTimeout: "5 secs"
+
+ldap:
+  enabled: false
+  host:
+  manager:
+    dn:
+    password:
+  userSearch:
+    base:
+    filter:
+    objectClass:
+    scope: ONE_LEVEL
+    identityAttribute: uid
+  authentication: "START_TLS"
+  referral: FOLLOW
+  timeout:
+    connect: 10 secs
+    read: 10 secs
+  identityStrategy: USE_DN
+  authenticationExpiration: 12 hours
+  tls:
+    enabled: false
+    keystore:
+    keystorePassword:
+    keystoreType:
+    truststore:
+    truststorePassword:
+    truststoreType:
+    clientAuth:
+    protocol:
+    shutdownGracefully:
